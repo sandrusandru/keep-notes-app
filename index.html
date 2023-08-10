@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="container">
+        <h2><img src="todo.png">Notes</h2>
+        <button><i class="fa-solid fa-pen"></i>Create Notes</button>
+    </div>
+    <div class="notescontainer">
+     <!-- <p contenteditable="true" class="input-text">
+        <img src="delect.png">
+     </p> -->
+    </div>
+   
+
+    <script>
+        const createNotes =document.querySelector("button");
+        const notesContainer=document.querySelector(".notescontainer");
+        let notes=document.querySelector(".input-text")
+
+        function shownotes(){
+            notesContainer.innerHTML=localStorage.getItem("notes");
+        }
+        shownotes();
+
+
+        function updateStorage(){
+            localStorage.setItem("notes",notesContainer.innerHTML);
+        }
+
+        createNotes.addEventListener("click",()=>{
+            let inputBox = document.createElement("p");
+            let img =document.createElement("img");
+            inputBox.className ="input-text";
+            inputBox.setAttribute("contenteditable","true")
+            img.src="delect.png"
+            notesContainer.appendChild(inputBox).appendChild(img);
+
+        });
+
+        notesContainer.addEventListener("click",function(e){
+                if(e.target.tagName === "IMG"){
+                    e.target.parentElement.remove();
+                    updateStorage();
+                }
+                else if(e.target.tagName==="P"){
+                    notes =document.querySelectorAll(".input-text");
+                    notes.forEach(nt=>{
+                        nt.onkeyup =function(){
+                            updateStorage();
+                        }
+                    })
+                }
+        });
+
+        document.addEventListener("keydown",event =>{
+            if(event.key === "Enter"){
+                document.execCommand("insertLineBreak");
+                event.preventDefault();
+            }
+        });
+
+
+    </script>
+</body>      
+</html>
+<style>
+    *{
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: 'poppins',sans-serif;
+    }
+    body{
+        margin-top: 4%;
+        margin-left: 10%;
+        background: rgb(78,100,108);
+background: linear-gradient(69deg, rgba(78,100,108,1) 0%, rgba(95,94,120,1) 12%, rgba(84,98,112,1) 29%, rgba(217,54,205,1) 100%);
+        color: #fff;
+    }
+    .container h2{
+        font-size: 32px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        animation: moveing 2s reverse 2;
+
+    }
+    
+    .container h2 img{
+        width: 40px;
+        margin-right: 5px;
+    }
+    @keyframes moveing{
+        0%{
+            transform: translateY(0px);
+        }
+        25%{
+            transform: translateZ(30px);
+        }
+        50%{
+            transform: translateY(20px);
+        }
+        75%{
+            transform: translateZ(10px);
+        }
+        100%{
+            transform: translateY(0px);
+        }
+    }
+    
+    button{
+        margin-top: 30px;
+        margin-left: 10px;
+        outline: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        border: 0;
+        height: 35px;
+        width: 150px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        border-radius: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(#e66465, #9198e5);
+        transition: 0.5s;
+    }
+    button:hover{
+        background: black;
+        color: pink;
+    }
+    button i{
+        margin-right: 7px;
+    }
+    .notescontainer{
+     margin-top: 30px;
+    }
+    .notescontainer p{
+        margin-top: 20px;
+    }
+    .input-text{
+        width: 100%;
+        max-width: 400px;
+        background: white;
+        min-height: 200px;
+        border-radius: 20px;
+        color: black;
+        outline: 0;
+        border: 0;
+        padding-top: 10px;
+        padding-left: 20px;
+        position: relative;
+    }
+    .notescontainer img{
+        bottom: 15px;
+        right: 15px;
+        width: 20px;
+        position:absolute;
+        cursor: pointer;
+
+    }
+    @media only screen and (max-width:600px){
+       .input-text{
+        max-width: 330px;
+       }
+    }
+   
+</style>
